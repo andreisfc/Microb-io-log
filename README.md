@@ -1,3 +1,4 @@
 # Microb[io]log
 
-Readme inicial.
+Fabio Carrer Andreis [andreisfc@protonmail.com]
+2020
