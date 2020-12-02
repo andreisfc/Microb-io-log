@@ -6,10 +6,15 @@
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'mainpage/site.css' %}"/>
     </head>
+    <header>
+        <div class="header">
+            <h1> Microb[io]log[y]</h1>
+        </div>
+    </header>
     <body>
         <div class="navbar">
             <a href="{% url 'home' %}" class="navbar-brand">Home</a>
-
+            <a href="{% url 'newpost' %}" class="navbar-item">New Post</a>
         </div>
 
         <div class="body-content">

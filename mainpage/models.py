@@ -1,6 +1,6 @@
 from django.db import models
-from django.utils import timezone
-
+from django.urls import reverse
+from django.template.defaultfilters import slugify
 
 class Post(models.Model):
     title = models.CharField(max_length=250)
@@ -10,5 +10,9 @@ class Post(models.Model):
     organism = models.CharField(max_length=150)
     text = models.TextField()
 
-    def __str__(self):
-        return(self.text)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs): # new
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)

@@ -10,6 +10,7 @@ def populate_db(numposts=1):
     from django.contrib.auth.models import User
     from lorem import get_paragraph
     from random import choice
+    from django.template.defaultfilters import slugify
 
     authors = User.objects.all()
     organisms = ["Bacillus anthracis", "Escherichia coli", "Helicobacter pylori"]
@@ -19,13 +20,14 @@ def populate_db(numposts=1):
     for i in range(numposts):
         # postcount = Post.objects.count()
         p = Post(
-            title = f"Titulo temporario {postcount+i**i+1}",
+            title = f"Titulo temporario {postcount+i+1}",
             author = choice(authors).username,
             creationdate = timezone.now(),
             updatedate = timezone.now(),
             organism = choice(organisms),
             text = get_paragraph(count=choice(range(5,10)),sep='<br>'),
         )
+        # p.slug = slugify(p.title)
         p.save()
 
 def clear_db():
@@ -33,7 +35,7 @@ def clear_db():
     for i in tmp:
         i.delete()
 
-# populate_db()
+populate_db()
 # populate_db(3)
 # clear_db()
 # FOR TESTING ONLY
@@ -47,4 +49,18 @@ def home(request,pagenum=1,perpage=5):
         request,
         'mainpage/home.html',
         {'posts':posts}
+    )
+
+def newpost(request):
+    return render(
+        request,
+        'mainpage/newpost.html'
+    )
+
+def detailedpost(request, year, month, slug):
+    post = Post.objects.get(slug=slug)
+    return render(
+        request,
+        'mainpage/detailedpost.html',
+        {'post':post}
     )
