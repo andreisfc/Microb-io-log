@@ -1,24 +1,48 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from datetime import datetime, timezone, timedelta
-
 from mainpage.models import Post
 
-posts = [Post(
-    title="Post 1", author="FCA", creationdate=datetime.now(tz=timezone(-timedelta(hours=3))), updatedate=datetime.now(tz=timezone(-timedelta(hours=3))), organism="Cryptococcus neoformans", text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Purus in massa tempor nec feugiat nisl pretium fusce. Enim sed faucibus turpis in eu mi bibendum neque egestas. Id aliquet risus feugiat in ante metus dictum at tempor. Laoreet id donec ultrices tincidunt arcu non sodales neque sodales. Massa enim nec dui nunc mattis enim ut. Dolor sit amet consectetur adipiscing elit. Iaculis at erat pellentesque adipiscing commodo elit. Sed vulputate mi sit amet mauris commodo quis imperdiet massa. Suspendisse ultrices gravida dictum fusce ut placerat orci nulla. Praesent tristique magna sit amet purus gravida quis blandit turpis. Tincidunt tortor aliquam nulla facilisi cras. Ut tristique et egestas quis ipsum suspendisse ultrices gravida dictum. Mauris sit amet massa vitae tortor condimentum lacinia quis"
-),
-Post(
-    title="Post 2", author="FCA", creationdate=datetime.now(tz=timezone(-timedelta(hours=3))), updatedate=datetime.now(tz=timezone(-timedelta(hours=3))), organism="Metarhizium anisopliae", text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Purus in massa tempor nec feugiat nisl pretium fusce. Enim sed faucibus turpis in eu mi bibendum neque egestas. Id aliquet risus feugiat in ante metus dictum at tempor. Laoreet id donec ultrices tincidunt arcu non sodales neque sodales. Massa enim nec dui nunc mattis enim ut. Dolor sit amet consectetur adipiscing elit. Iaculis at erat pellentesque adipiscing commodo elit. Sed vulputate mi sit amet mauris commodo quis imperdiet massa. Suspendisse ultrices gravida dictum fusce ut placerat orci nulla. Praesent tristique magna sit amet purus gravida quis blandit turpis. Tincidunt tortor aliquam nulla facilisi cras. Ut tristique et egestas quis ipsum suspendisse ultrices gravida dictum. Mauris sit amet massa vitae tortor condimentum lacinia quis"
-),
-Post(
-    title="Post 3", author="FCA", creationdate=datetime.now(tz=timezone(-timedelta(hours=3))), updatedate=datetime.now(tz=timezone(-timedelta(hours=3))), organism="Cryptococcus neoformans", text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Purus in massa tempor nec feugiat nisl pretium fusce. Enim sed faucibus turpis in eu mi bibendum neque egestas. Id aliquet risus feugiat in ante metus dictum at tempor. Laoreet id donec ultrices tincidunt arcu non sodales neque sodales. Massa enim nec dui nunc mattis enim ut. Dolor sit amet consectetur adipiscing elit. Iaculis at erat pellentesque adipiscing commodo elit. Sed vulputate mi sit amet mauris commodo quis imperdiet massa. Suspendisse ultrices gravida dictum fusce ut placerat orci nulla. Praesent tristique magna sit amet purus gravida quis blandit turpis. Tincidunt tortor aliquam nulla facilisi cras. Ut tristique et egestas quis ipsum suspendisse ultrices gravida dictum. Mauris sit amet massa vitae tortor condimentum lacinia quis"
-),
-Post(
-    title="Post 4", author="FCA", creationdate=datetime.now(tz=timezone(-timedelta(hours=3))), updatedate=datetime.now(tz=timezone(-timedelta(hours=3))), organism="Metarhizium anisopliae", text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Purus in massa tempor nec feugiat nisl pretium fusce. Enim sed faucibus turpis in eu mi bibendum neque egestas. Id aliquet risus feugiat in ante metus dictum at tempor. Laoreet id donec ultrices tincidunt arcu non sodales neque sodales. Massa enim nec dui nunc mattis enim ut. Dolor sit amet consectetur adipiscing elit. Iaculis at erat pellentesque adipiscing commodo elit. Sed vulputate mi sit amet mauris commodo quis imperdiet massa. Suspendisse ultrices gravida dictum fusce ut placerat orci nulla. Praesent tristique magna sit amet purus gravida quis blandit turpis. Tincidunt tortor aliquam nulla facilisi cras. Ut tristique et egestas quis ipsum suspendisse ultrices gravida dictum. Mauris sit amet massa vitae tortor condimentum lacinia quis"
-)]
+from django.utils import timezone
+
+## FOR TESTING ONLY
+
+def populate_db(numposts=1):
+    from django.contrib.auth.models import User
+    from lorem import get_paragraph
+    from random import choice
+
+    authors = User.objects.all()
+    organisms = ["Bacillus anthracis", "Escherichia coli", "Helicobacter pylori"]
+
+    postcount = Post.objects.count()
+
+    for i in range(numposts):
+        # postcount = Post.objects.count()
+        p = Post(
+            title = f"Titulo temporario {postcount+i**i+1}",
+            author = choice(authors).username,
+            creationdate = timezone.now(),
+            updatedate = timezone.now(),
+            organism = choice(organisms),
+            text = get_paragraph(count=choice(range(5,10)),sep='<br>'),
+        )
+        p.save()
+
+def clear_db():
+    tmp = Post.objects.all()
+    for i in tmp:
+        i.delete()
+
+# populate_db()
+# populate_db(3)
+# clear_db()
+# FOR TESTING ONLY
 
 
-def home(request):
+def home(request,pagenum=1,perpage=5):
+    # pagenum=3
+    # posts = Post.objects.order_by('-creationdate')[pagenum+((pagenum-1)*perpage)-1:perpage+(((pagenum-1)*perpage))]
+    posts = Post.objects.order_by('-creationdate')
     return render(
         request,
         'mainpage/home.html',

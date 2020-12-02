@@ -9,8 +9,8 @@
                 <div class="message">{{post.title}}</div><br>
                 <i>{{post.organism}}</i><br>
                 By {{post.author}} @ {{post.creationdate}}<br>
-                Last update: {{post.updatedate}}<br>
-                <p>{{post.text}}</p>
+                Last update @ {{post.updatedate}}<br>
+                <p>{{post.text | safe}}</p>
                 <hr/>
             {% endfor %}
         {% endif %}
