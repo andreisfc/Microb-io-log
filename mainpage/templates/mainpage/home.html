@@ -7,13 +7,13 @@
         {% if posts %}
             {% for post in posts %}
                 <div class="message">
-                    <a href="{{post.creationdate.year}}/{{post.creationdate.month}}/{{post.title | slugify}}/"><h3>{{post.title}}</h3></a>
+                    <a href="{% url 'detailedpost' post.creationdate.year post.creationdate.month post.slug %}"><h3>{{post.title}}</h3></a>
                 </div><br>
-                <i>{{post.organism}}</i><br>
+                <a href="{% url 'byorganism' post.organism|slugify %}"><i>{{post.organism}}</i></a><br>
                 By {{post.author}} @ {{post.creationdate}}<br>
                 Last update @ {{post.updatedate}}<br>
                 <p>{{post.text | safe}}</p>
                 <hr/>
-            {% endfor %}
+            {% endfor %}  
         {% endif %}
 {% endblock %}

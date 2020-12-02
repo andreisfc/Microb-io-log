@@ -2,45 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from mainpage.models import Post
 
-from django.utils import timezone
-
-## FOR TESTING ONLY
-
-def populate_db(numposts=1):
-    from django.contrib.auth.models import User
-    from lorem import get_paragraph
-    from random import choice
-    from django.template.defaultfilters import slugify
-
-    authors = User.objects.all()
-    organisms = ["Bacillus anthracis", "Escherichia coli", "Helicobacter pylori"]
-
-    postcount = Post.objects.count()
-
-    for i in range(numposts):
-        # postcount = Post.objects.count()
-        p = Post(
-            title = f"Titulo temporario {postcount+i+1}",
-            author = choice(authors).username,
-            creationdate = timezone.now(),
-            updatedate = timezone.now(),
-            organism = choice(organisms),
-            text = get_paragraph(count=choice(range(5,10)),sep='<br>'),
-        )
-        # p.slug = slugify(p.title)
-        p.save()
-
-def clear_db():
-    tmp = Post.objects.all()
-    for i in tmp:
-        i.delete()
-
-populate_db()
-# populate_db(3)
-# clear_db()
-# FOR TESTING ONLY
-
-
 def home(request,pagenum=1,perpage=5):
     # pagenum=3
     # posts = Post.objects.order_by('-creationdate')[pagenum+((pagenum-1)*perpage)-1:perpage+(((pagenum-1)*perpage))]
@@ -63,4 +24,19 @@ def detailedpost(request, year, month, slug):
         request,
         'mainpage/detailedpost.html',
         {'post':post}
+    )
+
+def byorganism(request, slug):
+    org = slug.capitalize().replace('-',' ')
+    posts = Post.objects.all().filter(organism=org).order_by('-creationdate')
+    return render(
+        request,
+        'mainpage/byorganism.html',
+        {'posts':posts,'organism':org}
+    )
+
+def organisms(request):
+    return render(
+        request,
+        'mainpage/organisms.html'
     )

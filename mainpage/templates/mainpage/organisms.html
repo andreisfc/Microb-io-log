@@ -1,0 +1,12 @@
+{% extends "mainpage/base_layout.html" %}
+{% block title %}
+    Organism List
+{% endblock %}
+{% block content %}
+    <h2>Available organisms:</h2>
+    {% if orglist %}
+        {% for org in orglist %}
+            <h3><a href="{% url 'byorganism' org|slugify %}"><i>{{org}}</i></a><br></h3>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
