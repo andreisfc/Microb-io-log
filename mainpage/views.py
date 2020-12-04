@@ -6,17 +6,6 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import Group, User
 from mainpage.models import Post, Organism
 
-def update_posts():
-    from random import choice
-
-    p = Post.objects.all()
-    l = choice(range(len(p)))
-
-    for i in range(l):
-        choice(p).save()
-
-update_posts()
-
 def home(request,pagenum=1,perpage=5):
     posts = Post.objects.order_by('-creationdate')
 
