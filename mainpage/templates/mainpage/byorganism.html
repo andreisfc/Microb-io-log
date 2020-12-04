@@ -6,11 +6,12 @@
 {% block content %}
     <h2>{{posts|length}} post(s) for <i>{{organism}}</i></h2>
         {% for post in posts %}
-            <a href="{% url 'detailedpost' post.creationdate.year post.creationdate.month post.slug %}"><h3>{{post.title}}</h3></a>
-            <p><i>{{post.organism}}</i><br>
-            By {{post.author}} @ {{post.creationdate}}<br>
-            Last update @ {{post.updatedate}}</p><br>
-            <p>{{post.text | safe}}</p>
-            <hr/>
+            <div style="background-color: #44857d; padding:10px;">
+                <a href="{% url 'detailedpost' post.creationdate.year post.creationdate.month post.slug %}"><h3>{{post.title}}</h3></a>
+                <p><i>{{post.organism}}</i><br>
+                Created by {{post.author}} @ {{post.creationdate}}<br>
+                Last update @ {{post.updatedate}}</p><br>
+            </div>
+            <p style="margin-left: 10px;">{{post.text | linebreaksbr | safe}}</p>
         {% endfor %}
 {% endblock %}

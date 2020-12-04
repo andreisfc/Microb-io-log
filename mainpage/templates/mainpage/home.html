@@ -6,12 +6,13 @@
 {% block content %}
         {% if posts %}
             {% for post in posts %}
-                <a href="{% url 'detailedpost' post.creationdate.year post.creationdate.month post.slug %}"><h3>{{post.title}}</h3></a>
-                <p><a href="{% url 'byorganism' post.organism.slug %}"><i>{{post.organism.name}}</i></a><br>
-                By {{post.author}} @ {{post.creationdate}}<br>
-                Last update @ {{post.updatedate}}</p><br>
-                <p>{{post.text | safe}}</p>
-                <hr/>
+                <div style="background-color: #44857d; padding:10px;">
+                    <a href="{% url 'detailedpost' post.creationdate.year post.creationdate.month post.slug %}"><h3>{{post.title}}</h3></a>
+                    <p><a href="{% url 'byorganism' post.organism.slug %}"><i>{{post.organism.name}}</i></a><br>
+                    Created by {{post.author}} @ {{post.creationdate}}<br>
+                    Last update @ {{post.updatedate}}</p>
+                </div>
+                <p style="margin-left: 10px;">{{post.text | linebreaksbr | safe}}</p>
             {% endfor %}  
         {% endif %}
 {% endblock %}

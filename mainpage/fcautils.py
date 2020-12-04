@@ -1,26 +1,27 @@
-__name__ = 'fcautils'
-
 def populate_db(numposts=1):
-    from django.contrib.auth.models import User
-    from lorem import get_paragraph
+    from lorem import get_paragraph, get_sentence
     from random import choice
-    from django.template.defaultfilters import slugify
 
     authors = User.objects.all()
-    organisms = ["Bacillus anthracis", "Escherichia coli", "Helicobacter pylori"]
-
-    postcount = Post.objects.count()
+    orgs = Organism.objects.all()
 
     for i in range(numposts):
         p = Post(
-            title = f"Titulo temporario {postcount+i+1}",
-            author = choice(authors).username,
-            creationdate = timezone.now(),
-            updatedate = timezone.now(),
-            organism = choice(organisms),
-            text = get_paragraph(count=choice(range(5,10)),sep='<br>'),
+            title = get_sentence(),
+            author = choice(authors),
+            organism = choice(orgs),
+            text = get_paragraph(count=choice(range(5,10))),
         )
         p.save()
+
+def update_posts():
+    from random import choice
+
+    p = Post.objects.all()
+    l = choice(range(len(p)))
+
+    for i in range(l):
+        choice(p).save()
 
 def clear_db():
     tmp = Post.objects.all()

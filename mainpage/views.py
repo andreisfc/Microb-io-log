@@ -3,7 +3,19 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.models import Group, User
 from mainpage.models import Post, Organism
+
+def update_posts():
+    from random import choice
+
+    p = Post.objects.all()
+    l = choice(range(len(p)))
+
+    for i in range(l):
+        choice(p).save()
+
+update_posts()
 
 def home(request,pagenum=1,perpage=5):
     posts = Post.objects.order_by('-creationdate')
@@ -14,11 +26,8 @@ def home(request,pagenum=1,perpage=5):
         {'posts':posts}
     )
 
-def newpost(request): ##TODO
-    return render(
-        request,
-        'mainpage/newpost.html'
-    )
+def newpost(request):
+    return redirect("")
 
 def detailedpost(request, year, month, slug):
     post = Post.objects.get(slug=slug)
@@ -50,6 +59,9 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            user.is_staff = True
+            user.save()
+            user.groups.add(Group.objects.get(name='regularUser'))
             username = form.cleaned_data.get('username')
             messages.success(request, f"New account created: {username}")
             login(request, user)
@@ -97,10 +109,7 @@ def loginpage(request):
     )
 
 def account(request):
-    return render(
-        request,
-        "mainpage/account.html"
-    )
+    return redirect("admin/")
 
 def logoutpage(request):
     logout(request)
