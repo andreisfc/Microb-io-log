@@ -6,12 +6,10 @@
 {% block content %}
         {% if posts %}
             {% for post in posts %}
-                <div class="message">
-                    <a href="{% url 'detailedpost' post.creationdate.year post.creationdate.month post.slug %}"><h3>{{post.title}}</h3></a>
-                </div><br>
-                <a href="{% url 'byorganism' post.organism|slugify %}"><i>{{post.organism}}</i></a><br>
+                <a href="{% url 'detailedpost' post.creationdate.year post.creationdate.month post.slug %}"><h3>{{post.title}}</h3></a>
+                <p><a href="{% url 'byorganism' post.organism.slug %}"><i>{{post.organism.name}}</i></a><br>
                 By {{post.author}} @ {{post.creationdate}}<br>
-                Last update @ {{post.updatedate}}<br>
+                Last update @ {{post.updatedate}}</p><br>
                 <p>{{post.text | safe}}</p>
                 <hr/>
             {% endfor %}  

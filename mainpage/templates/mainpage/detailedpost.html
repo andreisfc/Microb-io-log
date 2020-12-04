@@ -4,10 +4,8 @@
 {% endblock %}
 {% block content %}
     {% if post %}
-        <div class="message">
-            <h2>{{post.title}}</h2>
-        </div><br>
-        <a href="{% url 'byorganism' post.organism|slugify %}"><i>{{post.organism}}</i></a><br>
+        <h2>{{post.title}}</h2>
+        <a href="{% url 'byorganism' post.organism.slug %}"><i>{{post.organism}}</i></a><br>
         By {{post.author}} @ {{post.creationdate}}<br>
         Last update @ {{post.updatedate}}<br>
         <p>{{post.text | safe}}</p>

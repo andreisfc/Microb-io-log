@@ -1,0 +1,15 @@
+{% extends "mainpage/base_layout.html" %}
+{% block title %}
+    Login
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button style="background-color:#fb9334  ; color:#003d59" class="btn btn-outline-info" type="submit">Login</button>
+        </form>
+        <br>
+        If you don't have an account, <a href="{% url 'register'%}"><strong>head to the register page</strong></a>.
+    </div>
+{% endblock %}

@@ -12,10 +12,22 @@
         </div>
     </header>
     <body>
-        <div class="navbar">
-            <a href="{% url 'home' %}" class="navbar-brand">Home</a>
-            <a href="{% url 'newpost' %}" class="navbar-item">New Post</a>
-        </div>
+        <nav>
+            <div class="navbar">
+                <a href="{% url 'home' %}" class="navbar-brand">Home</a>
+                <a href="{% url 'organisms' %}" class="navbar-item">Organisms</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'newpost' %}" class="navbar-item">New Post</a>
+                    <a href="{% url 'account' %}" class="navbar-item">{{user.username}}</a>
+                    <a href="{% url 'logout' %}" class="navbar-item">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="navbar-item">Login</a>
+                    <a href="{% url 'register' %}" class="navbar-item">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        {% include 'mainpage/includes/messages.html' %}
 
         <div class="body-content">
             {% block content %}
@@ -23,7 +35,8 @@
         </div>
         <hr/>
         <footer>
-            Developed by Andreis, FC (2020)
+            Developed by Andreis, FC (2020)<br>
+            Powered by coffee
         </footer>
     </body>
 </html>
