@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group, User
 from mainpage.models import Post, Organism
 
 def home(request,pagenum=1,perpage=5):
-    posts = Post.objects.order_by('-creationdate')
+    posts = Post.objects.order_by('-updatedate')
 
     return render(
         request,
@@ -28,7 +28,7 @@ def detailedpost(request, year, month, slug):
 
 def byorganism(request, slug):
     org = Organism.objects.get(slug=slug)
-    posts = Post.objects.filter(organism=org).order_by('-creationdate')
+    posts = Post.objects.filter(organism=org).order_by('-updatedate')
     return render(
         request,
         'mainpage/byorganism.html',
