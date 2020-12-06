@@ -35,6 +35,6 @@ class Post(models.Model):
         if not self.creationdate:
             self.creationdate = timezone.now()
         if not self.author:
-            self.author = request.user
+            self.author = request.auth.user
         self.updatedate = timezone.now()
         return super().save(*args, **kwargs)
