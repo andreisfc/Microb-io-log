@@ -6,7 +6,7 @@ Fabio Carrer Andreis [andreisfc@protonmail.com]
 A prototype blog-type website for microorganism-related information. 
 
 ## Known issues:
- - New post always has 'admin' as author, regardless of which user is logged in. This is likely due to using the admin interface for additions.
+ - New post always has 'admin' as author, regardless of which user is logged in. This is likely due to using the admin interface for additions;
  - Timezone is not localized, currently using Django default (UTC);
  - When adding repeated posts, raises an `IntegrityError` (due to the UNIQUE constraint in Post.slug), rather than catching and dealing with the exception;
  - Any user can edit, add or remove Posts, regardless of which user is the author. Ideally, these actions should be restricted to their respective authors;
