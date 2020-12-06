@@ -11,3 +11,6 @@ A prototype blog-type website for microorganism-related information.
  - When adding repeated posts, raises an `IntegrityError` (due to the UNIQUE constraint in Post.slug), rather than catching and dealing with the exception;
  - Any user can edit, add or remove Posts, regardless of which user is the author. Ideally, these actions should be restricted to their respective authors;
  - Posts are currently limited to a single organism;
+
+## Observations
+The Post database was artificially populated and updated using the scrips in `mainpage/fcautils.py`. The Organism database was manually populated.
