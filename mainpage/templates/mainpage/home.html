@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+{% include 'mainpage/includes/messages.html' %}
         {% if posts %}
             {% for post in posts %}
                 <div style="background-color: #44857d; padding:10px;">
